@@ -1,150 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZCity.FUN - Loading</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		@font-face {
+			font-family: "Disket-Mono-Bold";
+			src: url("../fonts/Disket-Mono-Bold.ttf");
+		}
 
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+		body {
+			background-color: rgb(8, 6, 10);
+			display: flex;
+			justify-content: center;
+			overflow: hidden;
+			height: 100vh;
+			width: 100vw;
+		}
 
-        body {
-            background-color: #08060a;
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-            font-family: 'Bahnschrift', 'Share Tech Mono', 'Segoe UI', sans-serif;
-        }
+		.text_1 {
+			font-family: "Disket-Mono-Bold", sans-serif;
+			font-weight: bold;
+			font-size: 12vh;
+			color: rgb(223, 46, 46);
+			text-shadow: 3px 3px rgb(42, 28, 61);
+			text-align: center;
+		}
+		#text_tips {
+			font-family: 'Bahnschrift';
+			font-size: 3vh;
+			font-weight: lighter;
+			font-stretch: extra-condensed;
+			color: white;
+			text-shadow: 2px 2px rgb(42, 28, 61);
+			text-align: center;
+			transition: opacity 1s ease-in-out;
+			opacity: 1;
+		}
 
-        /* === ANIMATED GRID CANVAS === */
-        canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 105vw;
-            height: 105vh;
-        }
+		.info {
+			font-family: 'Bahnschrift';
+			font-size: 2.5vh;
+			font-weight: lighter;
+			font-stretch: extra-condensed;
+			color: white;
+			text-shadow: 2px 2px rgb(42, 28, 61);
+			text-align: center;
+		}
+		.info-down{
+			font-family: 'Bahnschrift';
+			font-size: 2vh;
+			font-weight: lighter;
+			font-stretch: extra-condensed;
+			color: rgb(155,155,155);
+			position: absolute;
+			top: 95%;
+		}
 
-        /* === BOTTOM GRADIENT === */
-        .gradient {
-            position: absolute;
-            width: 105vw;
-            height: 105vh;
-            background: linear-gradient(0deg, rgba(94, 23, 23, 0.5) 5%, rgba(0, 0, 0, 0) 70%);
-            pointer-events: none;
-        }
+		.centertext {
+			position: absolute;
+			margin-top: 40vh;
+			text-align: center;
+		}
 
-        /* === CENTER CONTENT === */
-        .centertext {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 10;
-        }
+		.gradient {
+			position: absolute;
+			width: 105vw;
+			height: 105vh;
 
-        /* === SERVER TITLE === */
-        .title-z {
-            font-family: 'Share Tech Mono', 'Consolas', monospace;
-            font-weight: bold;
-            font-size: clamp(4rem, 12vh, 8rem);
-            color: #df2e2e;
-            text-shadow: 3px 3px #2a1c3d;
-        }
+			background: linear-gradient(0deg,rgba(94, 23, 23, 0.5) 5%, rgba(0, 0, 0, 0) 70%);
+		}
 
-        .title-city {
-            font-family: 'Share Tech Mono', 'Consolas', monospace;
-            font-weight: bold;
-            font-size: clamp(4rem, 12vh, 8rem);
-            color: #fff;
-            text-shadow: 3px 3px #2a1c3d;
-        }
-
-        /* === SERVER INFO === */
-        .info-block {
-            margin-top: -1vh;
-        }
-
-        .info {
-            font-size: clamp(1rem, 2.5vh, 1.4rem);
-            font-weight: 300;
-            color: #fff;
-            text-shadow: 2px 2px #2a1c3d;
-        }
-
-        .map-info {
-            font-size: clamp(0.9rem, 2.2vh, 1.2rem);
-            font-weight: 300;
-            color: #999;
-            text-shadow: 2px 2px #2a1c3d;
-        }
-
-        /* === TIPS === */
-        .tip {
-            font-size: clamp(1rem, 3vh, 1.5rem);
-            font-weight: 300;
-            color: #fff;
-            text-shadow: 2px 2px #2a1c3d;
-            margin-top: 1rem;
-            transition: opacity 1s ease-in-out;
-            opacity: 1;
-            max-width: 600px;
-            display: inline-block;
-            line-height: 1.4;
-        }
-
-        /* === BOTTOM URL === */
-        .info-down {
-            position: fixed;
-            bottom: 2vh;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: clamp(0.8rem, 2vh, 1rem);
-            font-weight: 300;
-            color: #9b9b9b;
-            z-index: 10;
-        }
-    </style>
+		canvas {
+			width: 105vw;
+			height: 105vh;
+		}
+	</style>
 </head>
 <body>
-    <!-- Animated grid background -->
-    <canvas id="grid"></canvas>
+	<canvas id="grid"></canvas>
     <div class="gradient"></div>
-
-    <!-- Center content -->
-    <div class="centertext">
-        <span class="title-z">Z</span><span class="title-city">City</span>
-        <div class="info-block">
-            <span class="info" id="info">Official US #1 | Virginia</span>
+	<div class="centertext">
+		<span class="text_1">Z</span>
+		<span class="text_1" style="color:white;">City</span>
+        <div style="margin-top: -2vh;">
+            <span class="info" id="info" style="font-weight: 500;">Official US #1 | Virginia</span>
             <br>
-            <span class="map-info" id="map"></span>
+            <span class="info" id="map"></span>
             <br>
-            <span class="tip" id="text_tips" tip></span>
+            <span id="text_tips" tip>Hey where tips?</span>
         </div>
-    </div>
-
+	</div>
     <span class="info-down">zcity.fun</span>
 
-    <!-- Animated grid -->
     <script>
-        var canvas = document.getElementById('grid');
-        var ctx = canvas.getContext('2d');
+        const canvas = document.getElementById('grid');
+        const ctx = canvas.getContext('2d');
 
-        canvas.width = window.innerWidth + 25;
-        canvas.height = window.innerHeight + 25;
+        canvas.width = window.innerWidth+25;
+        canvas.height = window.innerHeight+25;
+        canvas.position = "absolute"
 
-        var gridSize = 60;
-        var offsetX = window.innerWidth;
-        var offsetY = -window.innerHeight;
-        var gridColor = 'rgba(99, 88, 104, 0.05)';
+        const gridSize = 60;
+        let offsetX = window.innerWidth;
+        let offsetY = -window.innerHeight;
+        const gridColor = 'rgba(99, 88, 104, 0.05)';
 
         function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            for (var x = offsetX % gridSize; x < canvas.width + gridSize; x += gridSize) {
+            for (let x = offsetX % gridSize; x < canvas.width + gridSize; x += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(x, 0);
                 ctx.lineTo(x, canvas.height);
@@ -153,7 +118,7 @@
                 ctx.stroke();
             }
 
-            for (var y = offsetY % gridSize; y < canvas.height + gridSize; y += gridSize) {
+            for (let y = offsetY % gridSize; y < canvas.height + gridSize; y += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(0, y);
                 ctx.lineTo(canvas.width, y);
@@ -170,13 +135,12 @@
 
         drawGrid();
 
-        window.addEventListener('resize', function() {
-            canvas.width = window.innerWidth + 25;
-            canvas.height = window.innerHeight + 25;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
     </script>
 
-    <!-- Tips rotation system -->
     <script>
         var tips = {
             "0": "You can check the pulse of a person if you press R while holding their hand or head",
@@ -216,34 +180,42 @@
             "34": "Inspect your weapon to see how many bullets you have left"
         };
 
-        var tipEl = document.getElementById('text_tips');
-        var tipKeys = Object.keys(tips);
-
-        function selectTip() {
-            var key = tipKeys[Math.floor(Math.random() * tipKeys.length)];
-            tipEl.textContent = tips[key];
+        var currentLang = navigator.language;
+        function SelectTip() {
+            var keys = Object.keys(tips);
+            const key = keys[Math.floor(Math.random() * keys.length)];
+            document.querySelectorAll('[tip]').forEach(element => {
+                if (tips[key]) {
+                    element.textContent = tips[key];
+                }
+            });
         }
-
-        function cycleTip() {
-            tipEl.style.opacity = 0;
-            setTimeout(function() {
-                selectTip();
-                tipEl.style.opacity = 1;
-                setTimeout(cycleTip, 12000);
-            }, 1000);
-        }
-
-        setTimeout(cycleTip, 500);
-
-        // GMod GameDetails callback
-        var infoText = document.getElementById('info');
-        var mapText = document.getElementById('map');
-        function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode, volume, language) {
-            var parts = servername.split('|');
-            if (parts[2]) {
-                infoText.textContent = parts[2].trim();
+        const changingText = document.getElementById('text_tips');
+        function changeText(){
+            changingText.style.opacity = 0;
+            changingText.addEventListener('transitionend', handleTransitionEnd, { once: true });
+            function handleTransitionEnd(){
+                changingText.style.opacity = 1;
+                SelectTip()
+                startThink()
             }
-            mapText.textContent = 'On map: ' + mapname;
+
+        }
+
+        function startThink(){
+            setTimeout(() => {
+                changeText()
+            },12000)
+        }
+        setTimeout(() => {changeText()},500)
+
+
+        const infoText = document.getElementById('info');
+        const mapText = document.getElementById('map');
+        function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamemode, volume, language ) {
+            infoText.textContent = servername.split("|")[2].trim()
+            mapText.textContent = "On map: " + mapname
+            currentLang = language
         }
     </script>
 </body>

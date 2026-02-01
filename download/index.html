@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZCity.FUN - Download & Join</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #08060a;
+            color: #b4b4b4;
+            font-family: 'Bahnschrift', 'Share Tech Mono', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === ANIMATED GRID CANVAS === */
+        canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 105vw;
+            height: 105vh;
+            z-index: 0;
+        }
+
+        /* === BOTTOM GRADIENT === */
+        .gradient {
+            position: fixed;
+            width: 105vw;
+            height: 105vh;
+            background: linear-gradient(0deg, rgba(94, 23, 23, 0.5) 5%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* === NAVIGATION === */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 40;
+            background: rgba(8, 6, 10, 0.95);
+            border-bottom: 1px solid rgba(150, 0, 0, 0.3);
+            padding: 1rem 2rem;
+        }
+
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-logo .z { color: #df2e2e; }
+        .nav-logo .city { color: #fff; }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: #df2e2e; }
+
+        /* === LAYOUT === */
+        .wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+        }
+
+        /* === HERO === */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-z {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-weight: bold;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: #df2e2e;
+            text-shadow: 3px 3px #2a1c3d;
+        }
+
+        .hero-city {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-weight: bold;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: #fff;
+            text-shadow: 3px 3px #2a1c3d;
+        }
+
+        .hero-sub {
+            font-size: 0.9rem;
+            color: #666;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: -0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #999;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* === BUTTONS === */
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: rgba(140, 30, 30, 0.6);
+            border-color: rgba(200, 40, 40, 0.6);
+        }
+
+        .btn-primary:hover {
+            background: rgba(180, 40, 40, 0.7);
+            box-shadow: 0 0 20px rgba(150, 0, 0, 0.4);
+        }
+
+        .btn-secondary {
+            color: #888;
+            background: transparent;
+            border-color: #333;
+        }
+
+        .btn-secondary:hover {
+            color: #df2e2e;
+            border-color: #600;
+        }
+
+        /* === DIVIDER === */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(94, 23, 23, 0.4), transparent);
+            margin: 3rem 0;
+        }
+
+        /* === SECTIONS === */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #df2e2e;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #1a1a1a;
+            text-shadow: 1px 1px #2a1c3d;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            line-height: 1.9;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .section p:last-child { margin-bottom: 0; }
+
+        /* === INFO GRID === */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-card {
+            background: rgba(8, 6, 10, 0.85);
+            border: 1px solid #1a1a1a;
+            padding: 1.5rem;
+            transition: border-color 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: rgba(150, 30, 30, 0.5);
+        }
+
+        .info-card-title {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #df2e2e;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card-text {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.75rem;
+            color: #333;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 600px) {
+            .nav-links { gap: 0.8rem; }
+            .nav-links a { font-size: 0.75rem; }
+            .buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated grid background -->
+    <canvas id="grid"></canvas>
+    <div class="gradient"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo"><span class="z">Z</span><span class="city">City</span>.FUN</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/rules.html">Rules</a></li>
+                <li><a href="/wiki.html">Wiki</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="wrap">
+        <!-- Hero -->
+        <div class="hero">
+            <span class="hero-z">Z</span><span class="hero-city">City</span>
+            <p class="hero-sub">Garry's Mod - US East - Virginia</p>
+            <p class="hero-desc">
+                Z-City is a Garry's Mod server featuring Homicide, TDM, and more.
+                Realistic physics, bleeding systems, ragdoll control, and a
+                well-thought-out weapon system. Built different from Homigrad.
+            </p>
+            <div class="buttons">
+                <a href="steam://connect/163.123.204.210:27077" class="btn btn-primary">Join Server</a>
+                <a href="https://discord.gg/WzHJdE66DQ" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Join Discord</a>
+                <a href="#" class="btn btn-secondary">Workshop Collection</a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Getting started -->
+        <div class="section">
+            <h2 class="section-title">Getting Started</h2>
+            <p>
+                All addons are delivered automatically via Steam Workshop.
+                When you join for the first time, your client will download
+                everything it needs. No manual setup required.
+            </p>
+            <p>
+                First-join download time depends on your connection speed.
+                Expect 5-15 minutes on a standard connection. Subsequent
+                joins will be near-instant.
+            </p>
+        </div>
+
+        <!-- Server info cards -->
+        <div class="section">
+            <h2 class="section-title">Server Details</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-title">Address</div>
+                    <div class="info-card-text">163.123.204.210:27077</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">Location</div>
+                    <div class="info-card-text">US East - Virginia</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">Game</div>
+                    <div class="info-card-text">Garry's Mod</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">Modes</div>
+                    <div class="info-card-text">Homicide, TDM, etc.</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">Addons</div>
+                    <div class="info-card-text">Auto-download via Workshop</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-title">First Join</div>
+                    <div class="info-card-text">~5-15 min download</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- What sets it apart -->
+        <div class="section">
+            <h2 class="section-title">What Sets Z-City Apart</h2>
+            <p>
+                Compared to its predecessor Homigrad, Z-City differs both
+                visually and mechanically. Gameplay is significantly slower
+                and more tactical. Realistic body physics, a dynamic
+                bleeding system, and ragdoll control change how every
+                encounter plays out.
+            </p>
+            <p>
+                This is not a spray-and-pray server. Read the rules, play
+                smart, and respect the other players.
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        ZCITY.FUN - Protected under American Law - ZCITY V2 - &copy; 2026
+    </footer>
+
+    <!-- Animated grid (same as loading page) -->
+    <script>
+        var canvas = document.getElementById('grid');
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth + 25;
+        canvas.height = window.innerHeight + 25;
+
+        var gridSize = 60;
+        var offsetX = window.innerWidth;
+        var offsetY = -window.innerHeight;
+        var gridColor = 'rgba(99, 88, 104, 0.05)';
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var x = offsetX % gridSize; x < canvas.width + gridSize; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+            }
+            for (var y = offsetY % gridSize; y < canvas.height + gridSize; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+            }
+            offsetX -= Math.min(Math.max(Math.sin(Date.now() / 10000), -0.2), 0.2);
+            offsetY += 0.2;
+            requestAnimationFrame(drawGrid);
+        }
+
+        drawGrid();
+
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth + 25;
+            canvas.height = window.innerHeight + 25;
+        });
+    </script>
+</body>
+</html>

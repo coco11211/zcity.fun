@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZCity.FUN - Loading</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #08060a;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Bahnschrift', 'Share Tech Mono', 'Segoe UI', sans-serif;
+        }
+
+        /* === ANIMATED GRID CANVAS === */
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 105vw;
+            height: 105vh;
+        }
+
+        /* === BOTTOM GRADIENT === */
+        .gradient {
+            position: absolute;
+            width: 105vw;
+            height: 105vh;
+            background: linear-gradient(0deg, rgba(94, 23, 23, 0.5) 5%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+        }
+
+        /* === CENTER CONTENT === */
+        .centertext {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* === SERVER TITLE === */
+        .title-z {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-weight: bold;
+            font-size: clamp(4rem, 12vh, 8rem);
+            color: #df2e2e;
+            text-shadow: 3px 3px #2a1c3d;
+        }
+
+        .title-city {
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            font-weight: bold;
+            font-size: clamp(4rem, 12vh, 8rem);
+            color: #fff;
+            text-shadow: 3px 3px #2a1c3d;
+        }
+
+        /* === SERVER INFO === */
+        .info-block {
+            margin-top: -1vh;
+        }
+
+        .info {
+            font-size: clamp(1rem, 2.5vh, 1.4rem);
+            font-weight: 300;
+            color: #fff;
+            text-shadow: 2px 2px #2a1c3d;
+        }
+
+        .map-info {
+            font-size: clamp(0.9rem, 2.2vh, 1.2rem);
+            font-weight: 300;
+            color: #999;
+            text-shadow: 2px 2px #2a1c3d;
+        }
+
+        /* === TIPS === */
+        .tip {
+            font-size: clamp(1rem, 3vh, 1.5rem);
+            font-weight: 300;
+            color: #fff;
+            text-shadow: 2px 2px #2a1c3d;
+            margin-top: 1rem;
+            transition: opacity 1s ease-in-out;
+            opacity: 1;
+            max-width: 600px;
+            display: inline-block;
+            line-height: 1.4;
+        }
+
+        /* === BOTTOM URL === */
+        .info-down {
+            position: fixed;
+            bottom: 2vh;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(0.8rem, 2vh, 1rem);
+            font-weight: 300;
+            color: #9b9b9b;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated grid background -->
+    <canvas id="grid"></canvas>
+    <div class="gradient"></div>
+
+    <!-- Center content -->
+    <div class="centertext">
+        <span class="title-z">Z</span><span class="title-city">City</span>
+        <div class="info-block">
+            <span class="info" id="info">Official US #1 | Virginia</span>
+            <br>
+            <span class="map-info" id="map"></span>
+            <br>
+            <span class="tip" id="text_tips" tip></span>
+        </div>
+    </div>
+
+    <span class="info-down">zcity.fun</span>
+
+    <!-- Animated grid -->
+    <script>
+        var canvas = document.getElementById('grid');
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth + 25;
+        canvas.height = window.innerHeight + 25;
+
+        var gridSize = 60;
+        var offsetX = window.innerWidth;
+        var offsetY = -window.innerHeight;
+        var gridColor = 'rgba(99, 88, 104, 0.05)';
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (var x = offsetX % gridSize; x < canvas.width + gridSize; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+            }
+
+            for (var y = offsetY % gridSize; y < canvas.height + gridSize; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+            }
+
+            offsetX -= Math.min(Math.max(Math.sin(Date.now() / 10000), -0.2), 0.2);
+            offsetY += 0.2;
+
+            requestAnimationFrame(drawGrid);
+        }
+
+        drawGrid();
+
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth + 25;
+            canvas.height = window.innerHeight + 25;
+        });
+    </script>
+
+    <!-- Tips rotation system -->
+    <script>
+        var tips = {
+            "0": "You can check the pulse of a person if you press R while holding their hand or head",
+            "1": "Food speeds up the recovery of stamina and blood",
+            "2": "Bandages can be used as a splint",
+            "3": "1/5 of a fentanyl syrette is the maximum before the overdose",
+            "4": "That funny looking can of food might be something else...",
+            "5": "3 painkiller bottles in a short amount of time can lead to a slight overdose",
+            "6": "Join our Discord server, it has a lot of useful information",
+            "7": "If a person is acting suspicious, it's not really a reason to kill",
+            "8": "Reading item descriptions is very useful",
+            "9": "Brains are very fragile",
+            "10": "All of the available binds exist in the Discord server",
+            "11": "\"bind e +use\" you dummy",
+            "12": "You can stand up using \"fake\" console command",
+            "13": "You don't have to obey an idiot with a gun",
+            "14": "Proper medical care increases your karma",
+            "15": "The doctor doesn't break ribs during CPR.",
+            "16": "Cyanide works better indoors",
+            "17": "Don't kick everyone, you'll lose your innocence",
+            "18": "Don't forget that there are other traitor classes!",
+            "19": "You have a variety of different items when you're the traitor. Check them out, they might be useful",
+            "20": "You can bunt with your firearms using E+LMB",
+            "21": "Harming others makes you lose your innocence, losing it means others can harm you without losing their karma",
+            "22": "Make sure to double tap your enemy",
+            "23": "Roleplaying isnt required, but it's nice for a more enjoyable time on the server",
+            "24": "Kill yourself in front of everyone for comedy, using \"suicide\" console command",
+            "25": "White noise means oxygen deprivation or brain damage",
+            "26": "Adrenaline speeds up blood recovery, while also letting you stay conscious for longer even if you have less than 3 litres of blood",
+            "27": "Adrenaline numbs the pain for the while, but it will always return after it",
+            "28": "The one and only cause of death is brain death",
+            "29": "Carbon gas will slowly lower your consciousness",
+            "30": "Black pixelated noise is the consciousness meter",
+            "31": "Karma works differently for police. Shooting someone is only allowed when you're directly threatened by them",
+            "32": "It's ok to break a rib or two while doing CPR",
+            "33": "You can earn points passively by playing the game, but you can also donate :3",
+            "34": "Inspect your weapon to see how many bullets you have left"
+        };
+
+        var tipEl = document.getElementById('text_tips');
+        var tipKeys = Object.keys(tips);
+
+        function selectTip() {
+            var key = tipKeys[Math.floor(Math.random() * tipKeys.length)];
+            tipEl.textContent = tips[key];
+        }
+
+        function cycleTip() {
+            tipEl.style.opacity = 0;
+            setTimeout(function() {
+                selectTip();
+                tipEl.style.opacity = 1;
+                setTimeout(cycleTip, 12000);
+            }, 1000);
+        }
+
+        setTimeout(cycleTip, 500);
+
+        // GMod GameDetails callback
+        var infoText = document.getElementById('info');
+        var mapText = document.getElementById('map');
+        function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode, volume, language) {
+            var parts = servername.split('|');
+            if (parts[2]) {
+                infoText.textContent = parts[2].trim();
+            }
+            mapText.textContent = 'On map: ' + mapname;
+        }
+    </script>
+</body>
+</html>
